@@ -23,8 +23,8 @@ export function SettingsModal() {
           <div className="flex flex-row gap-x-2 h-[40px] w-full px-2 select-none">
             <div className="flex w-[35px] h-[35px] rounded-full bg-white"></div>
             <div className="flex flex-col">
-              <p className="font-semibold text-xs">Artem Kharytonenko</p>
-              <p className="font-regular text-xs">@one</p>
+              <p className="font-semibold text-xs text-white/40">Artem Kharytonenko</p>
+              <p className="font-regular text-xs text-white/40">@one</p>
             </div>
           </div>
           <Separator className="my-2 bg-white/40"/>
@@ -33,6 +33,12 @@ export function SettingsModal() {
               <div className="flex flex-row gap-x-2 px-2 w-[200px] h-[35px] hover:bg-white/10 items-center rounded-lg text-sm select-none">
                 <Profile />
                 <p>Account</p>
+              </div>
+            </TabsTrigger>
+            <TabsTrigger value="security" asChild>
+              <div className="flex flex-row gap-x-2 px-2 w-[200px] h-[35px] hover:bg-white/10 items-center rounded-lg text-sm select-none">
+                <Security />
+                <p>Security</p>
               </div>
             </TabsTrigger>
             <TabsTrigger value="personalization" asChild>

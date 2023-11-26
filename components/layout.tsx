@@ -7,15 +7,13 @@ interface PageProps {
 }
 
 const layout = ({ children }: PageProps) => {
-  return ( <div style={{
-    backgroundImage: `url(${bg.src})`,
-    width: '100%',
-    height: '100%' }} className="bg-cover bg-center flex">
-    <Header />
+  return ( 
+    <>
     <main className='h-screen flex'>
       {children}
     </main>
-  </div> );
+    </>
+    );
 }
  
 export default layout;

@@ -9,6 +9,7 @@ import { ModeToggle } from "./ThemeSwitch";
 import { DropdownMenuProfile } from "./Profile";
 import { SettingsModal } from "./SettingsModal";
 import { HomePageContextMenu } from "./HomePageElements/HomePageContextMenu";
+import { Navigation } from "./Navigation";
 
 const Header = () => {
 
@@ -19,8 +20,9 @@ const Header = () => {
     const { user } = useUser();
 
     return ( 
-    <div className="w-full h-[50px] flex flex-row items-center px-4">
+    <div className="fixed top-0 w-full h-[50px] flex flex-row items-center px-4">
         <Logo />
+        <Navigation/>
         <Search />
         <SettingsModal />
         <div className="fixed flex flex-row items-center gap-x-4 right-4">

@@ -5,17 +5,18 @@ import { AiOutlinePlus } from "react-icons/ai";
 import Item from "./HomeElement";
 import { HomePageContextMenu } from "./HomePageElements/HomePageContextMenu";
 import { HomePageItemContextMenu } from "./HomePageElements/HomePageItemContextMenu";
+import { useUpload } from "@/hooks/useUpload";
 
 const HomePage = () => {
-
+  const upload = useUpload();
     return ( 
       <div className="flex flex-col">
         <HomePageContextMenu />
         <div className="h-[475px]">
           <GridLayout className="layout" cols={17} rowHeight={50} width={970} compactType={null} onLayoutChange={function(saveToLS) {}}>
           <div key="adder" data-grid={{ x: 0, y: 0, w: 1, h: 1, static: true }}>
-            <div className="w-full aspect-square border border-input bg-black/10 rounded-xl flex flex-col p-1 justify-center items-center backdrop-blur-2xl">
-              <AiOutlinePlus className="h-[20px] cursor-pointer hover:fill-neutral-300 transition-all duration-200"/>
+            <div onClick={upload.onOpen} className="w-full cursor-pointer aspect-square border border-input bg-black/10 rounded-xl flex flex-col p-1 justify-center items-center backdrop-blur-2xl">
+              <AiOutlinePlus className="h-[20px] hover:fill-neutral-300 transition-all duration-200"/>
             </div>
                 <p className="text-xs justify-center w-full truncate mt-1">Add new</p>
             </div>

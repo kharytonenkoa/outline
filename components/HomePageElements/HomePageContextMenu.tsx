@@ -9,10 +9,11 @@ import {
     ContextMenuSubTrigger,
     ContextMenuTrigger,
   } from "@/components/ui/context-menu"
+import { useUpload } from "@/hooks/useUpload";
 import { Book, Folder, Plus, RefreshCw } from "lucide-react"
-import Personalization from "../icons/Personalization"
   
   export function HomePageContextMenu() {
+    const upload = useUpload();
     return (
       <ContextMenu>
         <ContextMenuTrigger asChild>
@@ -30,7 +31,7 @@ import Personalization from "../icons/Personalization"
             Create
             </ContextMenuSubTrigger>
             <ContextMenuSubContent className="w-48">
-              <ContextMenuItem>
+              <ContextMenuItem onClick={upload.onOpen}>
               <Book className="mr-2 h-4 w-4" />
                 New Publication
                 </ContextMenuItem>
