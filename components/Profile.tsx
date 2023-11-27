@@ -23,6 +23,7 @@ import { useRouter } from "next/navigation";
 import useAuthModal from "@/hooks/useAuthModal";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useSettings } from "@/hooks/useSettings";
+import Link from "next/link";
   
   export function DropdownMenuProfile() {
 
@@ -45,7 +46,7 @@ import { useSettings } from "@/hooks/useSettings";
             <div className="bg-white w-[30px] h-[30px] rounded-full cursor-pointer flex justify-center items-center" ><FaUserAlt className="fill-neutral-400 w-[15px]"/></div>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56">
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuLabel>My Profile</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem>

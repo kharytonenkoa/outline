@@ -7,6 +7,7 @@ import UserProvider from '@/providers/UserProvider'
 import ModalProvider from '@/providers/ModalProvider'
 import ToasterProvider from '@/providers/ToasterProvider'
 import { ThemeProvider } from "@/components/theme-provider"
+import { Toaster } from '@/components/ui/toaster'
 
 const font = Open_Sans({ subsets: ['latin'] })
 
@@ -35,6 +36,7 @@ export default function RootLayout({
                 <ModalProvider />
                 <Home>
                   {children}
+                  <Toaster />
                 </Home>
               </UserProvider>
             </SupabaseProvider>

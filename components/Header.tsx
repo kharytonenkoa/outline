@@ -1,3 +1,5 @@
+"use client"
+
 import Logo from "./Logo";
 import Search from "./Search";
 import useAuthModal from "@/hooks/useAuthModal";
@@ -5,10 +7,8 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useUser } from "@/hooks/useUser";
 import { useRouter } from "next/navigation";
 import LogInButton from "./LogInButton";
-import { ModeToggle } from "./ThemeSwitch";
 import { DropdownMenuProfile } from "./Profile";
 import { SettingsModal } from "./SettingsModal";
-import { HomePageContextMenu } from "./HomePageElements/HomePageContextMenu";
 import { Navigation } from "./Navigation";
 
 const Header = () => {

@@ -12,6 +12,10 @@ import Widgets from "./icons/Widgets"
 import { useSettings } from "@/hooks/useSettings"
 import { Separator } from "./ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs"
+import { AccountForm } from "./Settings/AccountForm"
+import { SecurityForm } from "./Settings/SecurityForm"
+import { PersonalizationForm } from "./Settings/PersonalizationForm"
+import { TimeandLanguageForm } from "./Settings/TimeandLanguageForm"
 
 export function SettingsModal() {
   const settings = useSettings();
@@ -73,9 +77,13 @@ export function SettingsModal() {
             </TabsTrigger>
           </TabsList>
           </aside>
-          <TabsContent value="account"></TabsContent>
-          <TabsContent value="password">Change your password here.</TabsContent>
+          <div className="ml-4">
+          <TabsContent value="account"><AccountForm/></TabsContent>
+          <TabsContent value="security"><SecurityForm/></TabsContent>
+          <TabsContent value="personalization"><PersonalizationForm/></TabsContent>
+          <TabsContent value="timeandlanguage"><TimeandLanguageForm/></TabsContent>
           <TabsContent value="about">From AKh for AG</TabsContent>
+          </div>
         </Tabs>
       </DialogContent>
     </Dialog>
