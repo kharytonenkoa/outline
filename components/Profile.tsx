@@ -6,6 +6,9 @@ import {
     Info,
     Settings,
     User,
+    Moon,
+    Sun,
+    Palette,
   } from "lucide-react"
   
   import {
@@ -14,8 +17,12 @@ import {
     DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuLabel,
+    DropdownMenuPortal,
     DropdownMenuSeparator,
     DropdownMenuShortcut,
+    DropdownMenuSub,
+    DropdownMenuSubContent,
+    DropdownMenuSubTrigger,
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
 import { FaUserAlt } from "react-icons/fa"
@@ -24,9 +31,12 @@ import useAuthModal from "@/hooks/useAuthModal";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useSettings } from "@/hooks/useSettings";
 import Link from "next/link";
+import { useUser } from "@/hooks/useUser";
+import { useTheme } from "next-themes";
   
   export function DropdownMenuProfile() {
-
+    
+    const { isLoading, user, userDetails } = useUser();
     const settings = useSettings();
     const router = useRouter();
     const authModal = useAuthModal();
@@ -40,30 +50,49 @@ import Link from "next/link";
           }
         }
 
+        const { setTheme } = useTheme()
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-            <div className="bg-white w-[30px] h-[30px] rounded-full cursor-pointer flex justify-center items-center" ><FaUserAlt className="fill-neutral-400 w-[15px]"/></div>
+            {userDetails?.avatar_url ? (
+            <img src={userDetails?.avatar_url} alt="Avatar" className="w-[35px] h-[35px] flex rounded-full" />
+          ) : (
+            <div className="bg-white dark:bg-black rounded-full w-[35px] h-[35px] flex items-center justify-center"><User className="w-4 h-4"/></div>
+          )}
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56">
-          <DropdownMenuLabel>My Profile</DropdownMenuLabel>
+        <DropdownMenuContent className="w-48">
+          <DropdownMenuLabel>{userDetails?.full_name}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem>
-              <User className="mr-2 h-4 w-4" />
-              <span>Profile</span>
-              <DropdownMenuShortcut>Ctrl+P</DropdownMenuShortcut>
-            </DropdownMenuItem>
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger>
+              <Palette className="mr-2 h-4 w-4" />
+              <span>Theme</span>
+            </DropdownMenuSubTrigger>
+            <DropdownMenuPortal>
+              <DropdownMenuSubContent>
+                <DropdownMenuItem onClick={() => setTheme("dark")}>
+                  <Moon className="mr-2 h-4 w-4" />
+                  <span>Dark Mode</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setTheme("light")}>
+                  <Sun className="mr-2 h-4 w-4" />
+                  <span>Light Mode</span>
+                </DropdownMenuItem>
+              </DropdownMenuSubContent>
+            </DropdownMenuPortal>
+          </DropdownMenuSub>
             <DropdownMenuItem onClick={settings.onOpen}>
               <Settings className="mr-2 h-4 w-4" />
               <span>Settings</span>
-              <DropdownMenuShortcut>Ctrl+S</DropdownMenuShortcut>
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
+            <Link href={"/about"} className="flex flex-row justify-center items-center">
             <Info className="mr-2 h-4 w-4" />
             <span>About</span>
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <LifeBuoy className="mr-2 h-4 w-4" />

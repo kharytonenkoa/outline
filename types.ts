@@ -17,7 +17,9 @@ export interface UserDetails {
     first_name: string;
     last_name: string;
     full_name?: string;
-    avatar_url?: string;
+    username: string;
+    bio: string;
+    avatar_url: string;
     billing_adress?: Stripe.Address;
     payment_method?: Stripe.PaymentMethod[Stripe.PaymentMethod.Type];
 }

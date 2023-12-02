@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import Image from 'next/image'
 import { Database } from '@/types_db'
-type Users = Database['public']['Tables']['users']['Row']
+import { User } from 'lucide-react'
+type Profiles = Database['public']['Tables']['users']['Row']
 
 export default function Avatar({
   uid,
@@ -11,19 +12,19 @@ export default function Avatar({
   size,
   onUpload,
 }: {
-  uid: string
-  url: Users['avatar_url']
+  uid: string | undefined
+  url: Profiles['avatar_url']
   size: number
   onUpload: (url: string) => void
 }) {
   const supabase = createClientComponentClient<Database>()
-  const [avatarUrl, setAvatarUrl] = useState<Users['avatar_url']>(url)
+  const [avatarUrl, setAvatarUrl] = useState<Profiles['avatar_url']>(url)
   const [uploading, setUploading] = useState(false)
 
   useEffect(() => {
     async function downloadImage(path: string) {
       try {
-        const { data, error } = await supabase.storage.from('avatars').download(path)
+        const { data, error } = await supabase.storage.from('images').download(path)
         if (error) {
           throw error
         }
@@ -50,7 +51,7 @@ export default function Avatar({
       const fileExt = file.name.split('.').pop()
       const filePath = `${uid}-${Math.random()}.${fileExt}`
 
-      const { error: uploadError } = await supabase.storage.from('avatars').upload(filePath, file)
+      const { error: uploadError } = await supabase.storage.from('images').upload(filePath, file)
 
       if (uploadError) {
         throw uploadError
@@ -76,7 +77,7 @@ export default function Avatar({
           style={{ height: size, width: size }}
         />
       ) : (
-        <div className="avatar no-image" style={{ height: size, width: size }} />
+        <div className="bg-white dark:bg-black rounded-full flex items-center justify-center" style={{ height: size, width: size }}><User className='w-8 h-8'/></div>
       )}
       <div style={{ width: size }}>
         <label className="button primary block" htmlFor="single">

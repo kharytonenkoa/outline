@@ -2,7 +2,6 @@ import {
   Dialog,
   DialogContent,
 } from "@/components/ui/dialog"
-import About from "./icons/About"
 import Plan from "./icons/Plan"
 import Security from "./icons/Security"
 import Language from "./icons/Language"
@@ -12,12 +11,18 @@ import Widgets from "./icons/Widgets"
 import { useSettings } from "@/hooks/useSettings"
 import { Separator } from "./ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs"
-import { AccountForm } from "./Settings/AccountForm"
 import { SecurityForm } from "./Settings/SecurityForm"
 import { PersonalizationForm } from "./Settings/PersonalizationForm"
 import { TimeandLanguageForm } from "./Settings/TimeandLanguageForm"
+import { useUser } from "@/hooks/useUser"
+import React from "react"
+import AccountForm from "./Settings/AccountForm"
+import { User } from "lucide-react"
 
 export function SettingsModal() {
+
+  const { user, userDetails } = useUser();
+
   const settings = useSettings();
   return (
     <Dialog open={settings.isOpen} onOpenChange={settings.onClose}>
@@ -25,10 +30,14 @@ export function SettingsModal() {
         <Tabs defaultValue="account" className="w-[1000px] flex flex-row gap-x-2">
         <aside>
           <div className="flex flex-row gap-x-2 h-[40px] w-full px-2 select-none">
-            <div className="flex w-[35px] h-[35px] rounded-full bg-white"></div>
+            {userDetails?.avatar_url ? (
+              <img src={userDetails?.avatar_url} alt="Avatar" className="w-[35px] h-[35px] flex rounded-full" />
+            ) : (
+              <div className="bg-white dark:bg-black w-[35px] h-[35px] rounded-full flex items-center justify-center"><User className="w-4 h-4"/></div>
+            )}
             <div className="flex flex-col">
-              <p className="font-semibold text-xs text-white/40">Artem Kharytonenko</p>
-              <p className="font-regular text-xs text-white/40">@one</p>
+              <p className="font-medium text-sm text-white truncate">{userDetails?.full_name}</p>
+              <p className="font-regular text-xs text-white/40">{userDetails?.username}</p>
             </div>
           </div>
           <Separator className="my-2 bg-white/40"/>
@@ -69,20 +78,13 @@ export function SettingsModal() {
                 <p>Plan</p>
               </div>
             </TabsTrigger>
-            <TabsTrigger value="about" asChild>
-              <div className="flex flex-row gap-x-2 px-2 w-[200px] h-[35px] hover:bg-white/10 items-center rounded-lg text-sm select-none">
-                <About />
-                <p>About</p>
-              </div>
-            </TabsTrigger>
           </TabsList>
           </aside>
           <div className="ml-4">
-          <TabsContent value="account"><AccountForm/></TabsContent>
+          <TabsContent value="account"><AccountForm /></TabsContent>
           <TabsContent value="security"><SecurityForm/></TabsContent>
           <TabsContent value="personalization"><PersonalizationForm/></TabsContent>
           <TabsContent value="timeandlanguage"><TimeandLanguageForm/></TabsContent>
-          <TabsContent value="about">From AKh for AG</TabsContent>
           </div>
         </Tabs>
       </DialogContent>

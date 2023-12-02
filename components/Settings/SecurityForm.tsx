@@ -1,6 +1,5 @@
 "use client"
 
-import Link from "next/link"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useFieldArray, useForm } from "react-hook-form"
 import * as z from "zod"
@@ -16,73 +15,40 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/use-toast"
-import { cn } from "@/@app/utils"
+import { useUser } from "@/hooks/useUser"
+import { useEffect, useState } from "react"
+import Avatar from "../avatar"
+import { useSupabaseClient } from "@supabase/auth-helpers-react"
+import { useRouter } from "next/navigation"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 
-const profileFormSchema = z.object({
-  username: z
+const securityFormSchema = z.object({
+  password: z
     .string()
     .min(2, {
-      message: "Username must be at least 2 characters.",
-    })
-    .max(30, {
-      message: "Username must not be longer than 30 characters.",
+      message: "Password must be at least 6 characters.",
     }),
-  email: z
-    .string({
-      required_error: "Please select an email to display.",
-    })
-    .email(),
-  bio: z.string().max(160).min(4),
-  urls: z
-    .array(
-      z.object({
-        value: z.string().url({ message: "Please enter a valid URL." }),
-      })
-    )
-    .optional(),
 })
 
-type ProfileFormValues = z.infer<typeof profileFormSchema>
+type SecurityFormValues = z.infer<typeof securityFormSchema>
 
-// This can come from your database or API.
-const defaultValues: Partial<ProfileFormValues> = {
-  bio: "I own a computer.",
-  urls: [
-    { value: "https://shadcn.com" },
-    { value: "http://twitter.com/shadcn" },
-  ],
-}
 
 export function SecurityForm() {
-  const form = useForm<ProfileFormValues>({
-    resolver: zodResolver(profileFormSchema),
-    defaultValues,
+
+  const { isLoading, user, userDetails } = useUser();
+
+  useEffect(() => {
+    if(!user) {console.log("Error: No user")}
+  }, [isLoading, user]);
+  
+  const form = useForm<SecurityFormValues>({
+    resolver: zodResolver(securityFormSchema),
     mode: "onChange",
   })
 
-  const { fields, append } = useFieldArray({
-    name: "urls",
-    control: form.control,
-  })
-
-  function onSubmit(data: ProfileFormValues) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    })
+  function onSubmit(data: SecurityFormValues) {
   }
 
   return (
@@ -90,7 +56,39 @@ export function SecurityForm() {
     <div className="flex items-start w-full h-[60px]">
         <p className="font-semibold text-xl">Security</p>
     </div>
-    
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-[600px]">
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Current Password</FormLabel>
+              <FormControl>
+                <Input placeholder={"Current Password"} type="password" {...field} className="border border-white/40 bg-black/20"/>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>New Password</FormLabel>
+              <FormControl>
+              <Input placeholder={"New Password"} type="password" {...field} className="border border-white/40 bg-black/20"/>
+              </FormControl>
+              <FormDescription>
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit">Update password</Button>
+      </form>
+    </Form>
     </>
   )
 }

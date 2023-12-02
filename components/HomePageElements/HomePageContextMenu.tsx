@@ -11,16 +11,18 @@ import {
   } from "@/components/ui/context-menu"
 import { useUpload } from "@/hooks/useUpload";
 import { Book, Folder, Plus, RefreshCw } from "lucide-react"
+import { useRouter } from "next/navigation";
   
   export function HomePageContextMenu() {
     const upload = useUpload();
+    const router = useRouter();
     return (
       <ContextMenu>
         <ContextMenuTrigger asChild>
           <div className="absolute w-full h-full z-0"></div>
         </ContextMenuTrigger>
         <ContextMenuContent className="w-48">
-          <ContextMenuItem inset>
+          <ContextMenuItem inset onClick={router.refresh}>
           <RefreshCw className="mr-2 h-4 w-4" />
             Reload
             <ContextMenuShortcut>Ctrl+R</ContextMenuShortcut>

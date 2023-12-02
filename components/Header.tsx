@@ -10,6 +10,7 @@ import LogInButton from "./LogInButton";
 import { DropdownMenuProfile } from "./Profile";
 import { SettingsModal } from "./SettingsModal";
 import { Navigation } from "./Navigation";
+import { ProfileSheet } from "./ProfileSheet";
 
 const Header = () => {
 

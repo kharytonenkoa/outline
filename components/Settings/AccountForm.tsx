@@ -1,88 +1,70 @@
 "use client"
 
-import Link from "next/link"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useFieldArray, useForm } from "react-hook-form"
-import * as z from "zod"
-
 import { Button } from "@/components/ui/button"
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { toast } from "@/components/ui/use-toast"
-import { cn } from "@/@app/utils"
+import { useUser } from "@/hooks/useUser"
+import { useCallback, useEffect, useState } from "react"
+import Avatar from "../avatar"
+import { Label } from "../ui/label"
+import { DialogDescription } from "../ui/dialog"
+import { Session, createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { Database } from "@/types_db"
 
-const profileFormSchema = z.object({
-  username: z
-    .string()
-    .min(2, {
-      message: "Username must be at least 2 characters.",
-    })
-    .max(30, {
-      message: "Username must not be longer than 30 characters.",
-    }),
-  email: z
-    .string({
-      required_error: "Please select an email to display.",
-    })
-    .email(),
-  bio: z.string().max(160).min(4),
-  urls: z
-    .array(
-      z.object({
-        value: z.string().url({ message: "Please enter a valid URL." }),
+export default function AccountForm() {
+  const supabase = createClientComponentClient<Database>()
+  const [loading, setLoading] = useState(true)
+  const [username, setUsername] = useState<string | null>(null)
+  const [bio, setBio] = useState<string | null>(null)
+  const [avatar_url, setAvatarUrl] = useState<string | null>(null)
+  const { user, userDetails } = useUser();
+
+  const getProfile = useCallback(async () => {
+    try {
+      setLoading(true)
+
+      if (userDetails) {
+        setUsername(userDetails?.username)
+        setBio(userDetails?.bio)
+        setAvatarUrl(userDetails?.avatar_url)
+      }
+    } catch (error) {
+      alert('Error loading user data!')
+    } finally {
+      setLoading(false)
+    }
+  }, [ user, supabase])
+
+  useEffect(() => {
+    getProfile()
+  }, [user, getProfile])
+
+  async function updateProfile({
+    username,
+    bio,
+    avatar_url,
+  }: {
+    username: string | null
+    bio: string | null
+    avatar_url: string | null
+  }) {
+    try {
+      setLoading(true)
+
+      const { error } = await supabase.from('users').upsert({
+        id: user?.id as string,
+        username,
+        bio,
+        avatar_url,
+        updated_at: new Date().toISOString(),
       })
-    )
-    .optional(),
-})
-
-type ProfileFormValues = z.infer<typeof profileFormSchema>
-
-// This can come from your database or API.
-const defaultValues: Partial<ProfileFormValues> = {
-  bio: "I own a computer.",
-  urls: [
-    { value: "https://shadcn.com" },
-    { value: "http://twitter.com/shadcn" },
-  ],
-}
-
-export function AccountForm() {
-  const form = useForm<ProfileFormValues>({
-    resolver: zodResolver(profileFormSchema),
-    defaultValues,
-    mode: "onChange",
-  })
-
-  const { fields, append } = useFieldArray({
-    name: "urls",
-    control: form.control,
-  })
-
-  function onSubmit(data: ProfileFormValues) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    })
+      if (error) throw error
+      alert('Profile updated!')
+    } catch (error) {
+      alert('Error updating the data!')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -90,49 +72,41 @@ export function AccountForm() {
     <div className="flex items-start w-full h-[60px]">
         <p className="font-semibold text-xl">Account</p>
     </div>
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder="Your username" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name. It can be your real name or a
-                pseudonym.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
+      <div className="space-y-8 w-[600px]">
+        <div className="flex flex-row gap-x-4">
+        <Avatar
+          uid={user?.id}
+          url={avatar_url}
+          size={100}
+          onUpload={(url) => {
+            setAvatarUrl(url)
+          }}
         />
-        <FormField
-          control={form.control}
-          name="bio"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Bio</FormLabel>
-              <FormControl>
+        <div>
+              <Label>Username</Label>
+                <Input placeholder={"username"} defaultValue={userDetails?.username} 
+                onChange={(e) => setUsername(e.target.value)} className="border border-white/40 bg-black/20"/>
+              <DialogDescription>
+                This is your public display name.
+              </DialogDescription>
+        </div>
+        </div>
+        <div>
+              <Label>Bio</Label>
                 <Textarea
                   placeholder="Tell us a little bit about yourself"
+                  defaultValue={userDetails?.bio}
                   className="resize-none"
-                  {...field}
                 />
-              </FormControl>
-              <FormDescription>
-                You can <span>@mention</span> other users and organizations to
-                link to them.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Update profile</Button>
-      </form>
-    </Form>
+              <DialogDescription>
+                Maximum 100 characters
+              </DialogDescription>
+        </div>
+        <Button
+        onClick={() => updateProfile({ username, bio, avatar_url })}
+        disabled={loading}
+        >{loading ? 'Loading ...' : 'Update profile'}</Button>
+      </div>
     </>
   )
 }

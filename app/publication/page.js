@@ -8,8 +8,8 @@ import bg from '@/public/background.png'
 export default function Home() {
 
     const [file, setFile] = useState(null); 
-    const handleFileChange = (event: any) => { setFile(event.target.files[0]); }; 
-    const handleFormSubmit = async (event: any) => { event.preventDefault(); 
+    const handleFileChange = (event) => { setFile(event.target.files[0]); }; 
+    const handleFormSubmit = async (event) => { event.preventDefault(); 
     const formData = new FormData(); 
     formData.append('file', file); 
     try { 
