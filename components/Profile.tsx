@@ -31,11 +31,20 @@ import useAuthModal from "@/hooks/useAuthModal";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useSettings } from "@/hooks/useSettings";
 import Link from "next/link";
+import Image from "next/image";
 import { useUser } from "@/hooks/useUser";
 import { useTheme } from "next-themes";
+import { Database } from "@/types_db";
+import { useEffect, useState } from "react";
+import supabase from "@/app/utils/supabase";
+type Profiles = Database['public']['Tables']['users']['Row']
   
-  export function DropdownMenuProfile() {
-    
+  export function DropdownMenuProfile({
+    url
+  }: {
+    url: Profiles['avatar_url']
+  }) {
+    const [avatarUrl, setAvatarUrl] = useState<Profiles['avatar_url']>(url)
     const { isLoading, user, userDetails } = useUser();
     const settings = useSettings();
     const router = useRouter();
@@ -51,13 +60,38 @@ import { useTheme } from "next-themes";
         }
 
         const { setTheme } = useTheme()
+
+        useEffect(() => {
+          async function downloadImage(path: string) {
+            try {
+              const { data, error } = await supabase.storage.from('images').download(path)
+              if (error) {
+                throw error
+              }
+      
+              const url = URL.createObjectURL(data)
+              setAvatarUrl(url)
+            } catch (error) {
+              console.log('Error downloading image: ', error)
+            }
+          }
+      
+          if (url) downloadImage(url)
+        }, [url, supabase])
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-            {userDetails?.avatar_url ? (
-            <img src={userDetails?.avatar_url} alt="Avatar" className="w-[35px] h-[35px] flex rounded-full" />
+          {avatarUrl ? (
+          <Image
+            width={35}
+            height={35}
+            src={avatarUrl}
+            alt="Avatar"
+            className="rounded-full"
+            style={{ height: 35, width: 35 }}
+          />
           ) : (
-            <div className="bg-white dark:bg-black rounded-full w-[35px] h-[35px] flex items-center justify-center"><User className="w-4 h-4"/></div>
+            <div className="bg-white dark:bg-black rounded-full flex items-center justify-center" style={{ height: 35, width: 35 }}><User className='w-4 h-4'/></div>
           )}
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-48">
@@ -67,7 +101,7 @@ import { useTheme } from "next-themes";
           <DropdownMenuSub>
             <DropdownMenuSubTrigger>
               <Palette className="mr-2 h-4 w-4" />
-              <span>Theme</span>
+              <span>Mode</span>
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
               <DropdownMenuSubContent>

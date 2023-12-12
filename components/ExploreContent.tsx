@@ -1,11 +1,19 @@
+import getPublications from "@/app/actions/getPublications";
+import ContentMap from "./ContentMap";
+import { EmblaOptionsType } from "embla-carousel-react";
 import Proposals from "./Proposals";
-import { ScrollArea } from "./ui/scroll-area";
 
-const ExploreContent = () => {
+const OPTIONS: EmblaOptionsType = {}
+const SLIDE_COUNT = 5
+const SLIDES = Array.from(Array(SLIDE_COUNT).keys())
+
+const ExploreContent = async () => {
+    const publications = await getPublications();
     return ( 
-    <ScrollArea className="h-[5000px] w-[65%] fixed left-[15%] border-[0.5px] border-x-white/20">
+        <>
             <Proposals/>
-    </ScrollArea>
+            <ContentMap publications={publications}/>
+        </>
     );
 }
  

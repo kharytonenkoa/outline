@@ -55,7 +55,7 @@ const routes = useMemo(() => [
 
 
     return ( 
-        <div className="flex bg-black/10 backdrop-blur-2xl h-full w-[50px] items-end px-1">
+        <div className="flex h-full w-[4%] items-center px-1 fixed left-0 bottom-0">
             <div className="w-full mt-2">
                 {routes.map((item) => (
                                 <SidebarItem

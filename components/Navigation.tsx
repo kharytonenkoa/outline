@@ -2,8 +2,6 @@ import {
     Dialog,
     DialogContent,
   } from "@/components/ui/dialog"
-import { DialogTrigger } from "@radix-ui/react-dialog"
-import { Button } from "./ui/button"
 import React from "react"
 import { BookCopy, Compass, Home, HomeIcon, Settings, User } from "lucide-react"
 import { useSettings } from "@/hooks/useSettings"

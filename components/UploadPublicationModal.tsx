@@ -1,7 +1,7 @@
 "use client"
 
 import uniqid from "uniqid";
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 
 import { useRouter } from "next/navigation";
@@ -17,87 +17,16 @@ import { useUpload } from "@/hooks/useUpload"
 import { Input } from "./ui/input"
 import { Button } from "./ui/button"
 import { Textarea } from "./ui/textarea"
-import { Check, ChevronsUpDown } from "lucide-react"
-import { cn } from "@/@app/utils"
-import {
-  Command,
-  CommandGroup,
-  CommandItem,
-} from "@/components/ui/command"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
 import { toast } from "./ui/use-toast";
- 
-const formats = [
-  {
-    value: "public",
-    label: "Public",
-  },
-  {
-    value: "private",
-    label: "Private",
-  },
-  {
-    value: "draft",
-    label: "Draft",
-  },
-]
-
-export function ComboboxFormat() {
-  const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState("")
-
-  return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          className="w-[200px] justify-between bg-black/10 border border-white/40 hover:bg-white/10"
-        >
-          {value
-            ? formats.find((format) => format.value === value)?.label
-            : "Select format..."}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
-        <Command>
-          <CommandGroup>
-            {formats.map((format) => (
-              <CommandItem
-                key={format.value}
-                value={format.value}
-                onSelect={(currentValue:any) => {
-                  setValue(currentValue === value ? "" : currentValue)
-                  setOpen(false)
-                }}
-              >
-                <Check
-                  className={cn(
-                    "mr-2 h-4 w-4",
-                    value === format.value ? "opacity-100" : "opacity-0"
-                  )}
-                />
-                {format.label}
-              </CommandItem>
-            ))}
-          </CommandGroup>
-        </Command>
-      </PopoverContent>
-    </Popover>
-  )
-}
+import { Checkbox } from "./ui/checkbox";
+import useUploadModal from "@/hooks/useUploadModal";
   
   export function UploadPublicationModal() {
-    const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const supabaseClient = useSupabaseClient();
   const { user } = useUser();
   const router = useRouter();
+  const uploadModal = useUploadModal();
 
   const {
     register,
@@ -110,8 +39,7 @@ export function ComboboxFormat() {
         description: '',
         publication: null,
         image: null,
-        format: '',
-        user
+        visibility: false,
     }
   });
 
@@ -180,7 +108,7 @@ export function ComboboxFormat() {
         description: values.description,
         image_path: imageData.path,
         publication_path: publicationData.path,
-        format: values.format
+        visibility: values.visibility
     });
 
     if (supabaseError) {
@@ -196,6 +124,7 @@ export function ComboboxFormat() {
       title: "Publication created!"
     });
     reset();
+    uploadModal.onClose();
 
     } catch (error) {
       toast({
@@ -207,6 +136,14 @@ export function ComboboxFormat() {
   }
     
     const upload = useUpload();
+    const [file, setFile] = useState<string | undefined>();
+
+    function handleChange(e: ChangeEvent<HTMLInputElement>) {
+        if (e.target.files) {
+            console.log(e.target.files);
+            setFile(URL.createObjectURL(e.target.files[0]));
+        }
+    }
     return (
       <Dialog open={upload.isOpen} onOpenChange={upload.onClose}>
         <DialogContent className="sm:max-w-[800px] h-[500px]">
@@ -221,12 +158,21 @@ export function ComboboxFormat() {
                 <div className="w-[300px] fixed right-8 aspect-[3/2] rounded-lg gap-x-1 text-sm select-none
                         text-white bg-black/10 border border-white/40 flex cursor-pointer
                         justify-center items-center">
-                  <input {...register('image', { required: true })} id="image" type="file" placeholder="Preview" accept="image/*" className="text-transparent file:hidden" />
+                  <input {...register('image', { required: true })} id="image" type="file" placeholder="Preview" accept="image/*" className="text-transparent file:hidden z-20 cursor-pointer" onChange={handleChange}/>
+                  {file && <img className="absolute select-none w-full h-full rounded-lg z-10 cursor-pointer" src={file}/>}
                   <span id='val'></span>
-                  <span id='image' className="absolute select-none text-center text-sm">Upload the preview* <br/> (.png or .jpg file)</span>
+                  <span id='image' className="absolute select-none text-center text-sm cursor-pointer">Upload the preview <br/> (.png or .jpg file)</span>
                 </div>
-              <div className="fixed right-[130px] top-[270px]">
-                <ComboboxFormat />
+              <div className="fixed right-[110px] top-[270px] flex p-2 items-center justify-center space-x-2 bg-black/10 rounded-lg w-[220px] h-[80px] border border-white/40">
+                <Checkbox id="visibility" {...register('visibility', { value: true })} />
+                <div className="flex flex-col">
+                <label htmlFor="visibility" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                Public file
+                </label>
+                <p className="text-sm text-muted-foreground">
+                This publication will be visible for all users.
+                </p>
+                </div>
               </div>
               <Button type="submit" className="fixed bottom-8 right-8">Submit</Button>
               </div>

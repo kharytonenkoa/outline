@@ -15,13 +15,13 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/', req.url))
   }
 
-  if (!user && req.nextUrl.pathname !== '/login') {
-    return NextResponse.redirect(new URL('/login', req.url))
+  if (!user && req.nextUrl.pathname === '/') {
+    return NextResponse.redirect(new URL('/explore', req.url))
   }
 
   return res
 }
 
 export const config = {
-  matcher: ['/', '/account'],
+  matcher: ['/', '/login'],
 }

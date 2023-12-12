@@ -11,6 +11,7 @@ import { DropdownMenuProfile } from "./Profile";
 import { SettingsModal } from "./SettingsModal";
 import { Navigation } from "./Navigation";
 import { ProfileSheet } from "./ProfileSheet";
+import Link from "next/link";
 
 const Header = () => {
 
@@ -32,7 +33,7 @@ const Header = () => {
             <DropdownMenuProfile />
             </>
             ) : (
-            <LogInButton onClick={authModal.onOpen}/>
+            <Link href={"/login"}><LogInButton/></Link>
             )}
         </div>
     </div>

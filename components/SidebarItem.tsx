@@ -28,6 +28,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
         rounded-lg
         hover:bg-black/10
         active:bg-black/20
+        active:backdrop-blur-xl
         `,
         active && "bg-black/10"
         )}

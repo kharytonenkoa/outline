@@ -4,8 +4,8 @@ import { TooltipProvider, Tooltip, TooltipContent, TooltipTrigger } from "./ui/t
 
 const Proposals = () => {
     return ( 
-        <div className="w-full h-[250px] flex items-center justify-center p-4">
-            <div className="flex flex-row rounded-xl w-full h-[200px] select-none">
+        <div className="w-full h-[200px] flex items-center justify-center p-4 mt-4">
+            <div className="flex flex-row rounded-xl bg-gradient-to-b from-blue-400 to-blue-600 w-full h-[200px] select-none">
                 <div className="flex flex-col gap-y-4 h-full w-[40%] px-6 items-start justify-center">
                 <div>
                 <p className="text-white text-2xl font-semibold">As many as touched Him</p>

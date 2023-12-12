@@ -10,6 +10,7 @@ export interface Publication {
     image_path: string;
     created_at: string;
     uuid: string;
+    visibility: boolean;
   }
 
 export interface UserDetails {

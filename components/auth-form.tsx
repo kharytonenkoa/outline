@@ -1,17 +1,16 @@
 'use client'
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { Database } from '@/types_db'
+import { useSupabaseClient } from '@supabase/auth-helpers-react'
 
 export default function AuthForm() {
-  const supabase = createClientComponentClient<Database>()
+  const supabaseClient = useSupabaseClient();
 
   return (
     <Auth
-      supabaseClient={supabase}
+      supabaseClient={supabaseClient}
       providers={['google']}
-      magicLink={true}
+      magicLink={false}
       appearance={{
         theme: ThemeSupa,
         variables: {
@@ -25,8 +24,7 @@ export default function AuthForm() {
         }
       }}
       theme="dark"
-      showLinks={false}
-      redirectTo="http://localhost:3000/auth/callback"
+      redirectTo="http://localhost:3000/"
     />
   )
 }

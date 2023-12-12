@@ -6,8 +6,10 @@ import {
     ContextMenuTrigger,
   } from "@/components/ui/context-menu"
 import { ArrowRightToLine, BookOpenText, Link, Trash2 } from "lucide-react"
+import { useRouter } from "next/navigation"
   
   export function HomePageItemContextMenu() {
+    const router = useRouter()
     return (
       <ContextMenu>
         <ContextMenuTrigger asChild>

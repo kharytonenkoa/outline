@@ -80,9 +80,6 @@ export default function Avatar({
         <div className="bg-white dark:bg-black rounded-full flex items-center justify-center" style={{ height: size, width: size }}><User className='w-8 h-8'/></div>
       )}
       <div style={{ width: size }}>
-        <label className="button primary block" htmlFor="single">
-          {uploading ? 'Uploading ...' : 'Upload'}
-        </label>
         <input
           style={{
             visibility: 'hidden',
