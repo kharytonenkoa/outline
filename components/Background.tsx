@@ -1,4 +1,4 @@
-import bg from '@/public/background-gallery/abstract-figures-dark.jpg'
+import bg from '@/public/background-gallery/purple-noise.png'
 
 const Background = () => {
     return ( 

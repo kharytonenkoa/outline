@@ -1,9 +1,11 @@
+'use client'
+
 import {
     Dialog,
     DialogContent,
   } from "@/components/ui/dialog"
 import React from "react"
-import { BookCopy, Compass, Home, HomeIcon, Settings, User } from "lucide-react"
+import { BookCopy, Compass, Home, HomeIcon, Search, Settings, User } from "lucide-react"
 import { useSettings } from "@/hooks/useSettings"
 import Link from "next/link"
   
@@ -13,7 +15,7 @@ import Link from "next/link"
  
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if (e.key === "b" && (e.metaKey || e.ctrlKey)) {
+      if (e.key === "b" || e.key === "и" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault()
         setOpen((open) => !open)
       }
@@ -28,7 +30,7 @@ import Link from "next/link"
         <DialogContent className="sm:max-w-[350px] h-[100px] border-none">
           <div className="flex flex-row gap-x-4 items-center justify-center">
             <Link href={"/"} className="flex w-[50px] h-[50px] items-center justify-center rounded-lg bg-black/10 hover:bg-black/20 transition-all duration-200"><Home className="w-8 h-8"/></Link>
-            <Link href={"/explore"} className="flex w-[50px] h-[50px] items-center justify-center rounded-lg bg-black/10 hover:bg-black/20 transition-all duration-200"><Compass className="w-8 h-8"/></Link>
+            <Link href={"/explore"} className="flex w-[50px] h-[50px] items-center justify-center rounded-lg bg-black/10 hover:bg-black/20 transition-all duration-200"><Search className="w-8 h-8"/></Link>
             <Link href={"/readlist"} className="flex w-[50px] h-[50px] items-center justify-center rounded-lg bg-black/10 hover:bg-black/20 transition-all duration-200"><BookCopy className="w-8 h-8"/></Link>
             <button onClick={settings.onOpen} className="flex w-[50px] h-[50px] items-center justify-center rounded-lg bg-black/10 hover:bg-black/20 transition-all duration-200"><Settings className="w-8 h-8"/></button>
           </div>

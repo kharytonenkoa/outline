@@ -4,13 +4,14 @@ import Logo from "@/components/Logo"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuPortal, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Progress } from "@/components/ui/progress"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Bold, BookDown, BookPlus, CornerDownLeft, Highlighter, Languages, Maximize2, MessageCircle, MoreHorizontal, PencilRuler, ScanSearch, ThumbsDown, ThumbsUp, Type, WrapText } from "lucide-react"
+import { Bold, BookDown, BookPlus, ChevronDown, CornerDownLeft, Highlighter, Languages, Maximize2, MessageCircle, MoreHorizontal, PencilRuler, ScanSearch, ThumbsDown, ThumbsUp, Type, WrapText } from "lucide-react"
 import React from "react"
 import { Document, Page } from 'react-pdf';
 
 export default async function PublicationPage({ params: { id } }: {
   params: { id: string }
 }) {
+
   const { data } = await supabase.from('publications')
   .select(`
   title, 
@@ -20,25 +21,25 @@ export default async function PublicationPage({ params: { id } }: {
 `)
   .match({ id }).single()
   
-  const pdfURL = '../example.pdf';
-  const previewURL = 'https://oxnfecolfxzhszxwowjk.supabase.co/storage/v1/object/public/images/'
-
   return (  
     <>
       {data ? <title>{data.title + ' - Outline'}</title> : <title>Outline</title>}
-      <div className="fixed z-10 w-full h-[50px] backdrop-blur-[50px] md:flex hidden flex-row items-center px-4">
-        <Logo/>
-        <div className="ml-4 flex gap-x-1 text-sm font-medium truncate justify-center items-center">
-          
-          <div className="fixed left-[42%]"><Progress value={33} className="w-64 h-1"/></div>
-          <div className="fixed right-4 flex flex-row justify-between items-center gap-x-4 select-none">
-            <div className="flex flex-row justify-between items-center gap-x-[15px]">
-              <div className="flex flex-col items-end">
-              {data ? <p className="text-xs font-medium">{data.title}</p> : <p></p>}
-              {data ? <p className="text-xs font-light text-white/60 select-none cursor-pointer hover:underline decoration-current">{data.author}</p> : <p></p>}
-              </div>
-              <div className="h-[35px] aspect-[3/2] overflow-hidden flex items-center justify-center rounded-md">
-                {data ? <img src='https://oxnfecolfxzhszxwowjk.supabase.co/storage/v1/object/public/images/fd6db3df-b9f5-4856-a797-5251bd1a7f28-0.05230312693677486.png' className="rounded-md"/> : <div/>}
+      <div className="fixed z-10 w-full h-[50px] backdrop-blur-[50px] md:flex hidden">
+        <div className="w-full h-[50px] flex flex-row items-center px-4">
+          <Logo/>
+          <div className="ml-4 flex gap-x-1 text-sm font-medium truncate justify-center items-center">
+            
+            <div className="fixed left-[42%]"><Progress value={(11/12)*100} className="w-64 h-1"/></div>
+            <div className="fixed right-4 flex flex-row justify-between items-center gap-x-4 select-none">
+              <div className="flex flex-row justify-between items-center gap-x-[15px]">
+                <div className="flex flex-col items-end w-[200px]">
+                {data ? <p className="text-xs font-medium">{data.title}</p> : <p></p>}
+                {data ? <p className="text-xs font-light text-white/60 select-none cursor-pointer hover:underline decoration-current">{data.author}</p> : <p></p>}
+                </div>
+                <div className="h-[35px] aspect-[3/2] overflow-hidden flex items-center justify-center rounded-md">
+                  {data ? <img src='https://oxnfecolfxzhszxwowjk.supabase.co/storage/v1/object/public/images/fd6db3df-b9f5-4856-a797-5251bd1a7f28-0.05230312693677486.png' className="rounded-md"/> : <div/>}
+                </div>
+                <div className="h-8 cursor-pointer rounded-md flex items-center justify-center"><ChevronDown className="w-4 h-4 hover:border-white/60"/></div>
               </div>
             </div>
           </div>
@@ -131,9 +132,6 @@ export default async function PublicationPage({ params: { id } }: {
           </DropdownMenuContent>
         </DropdownMenu>
         <div className="w-[700px] h-full rounded-xl ml-[25%] p-4">
-        <Document file={pdfURL}>
-          <Page pageNumber={1} />
-        </Document>
         </div>
       </ScrollArea>
     </>

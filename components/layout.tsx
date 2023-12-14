@@ -8,6 +8,7 @@ const layout = ({ children }: PageProps) => {
   return ( 
     <>
     <main className='h-screen flex'>
+      
       {children}
     </main>
     </>

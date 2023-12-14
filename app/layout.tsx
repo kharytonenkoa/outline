@@ -8,6 +8,7 @@ import ModalProvider from '@/providers/ModalProvider'
 import ToasterProvider from '@/providers/ToasterProvider'
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from '@/components/ui/toaster'
+import { Navigation } from '@/components/Navigation'
 
 const font = Open_Sans({ subsets: ['latin'] })
 
@@ -35,6 +36,7 @@ export default function RootLayout({
               <UserProvider>
                 <ModalProvider />
                 <Home>
+                  <Navigation/>
                   {children}
                   <Toaster />
                 </Home>

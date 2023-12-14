@@ -10,10 +10,9 @@ const SLIDES = Array.from(Array(SLIDE_COUNT).keys())
 const ExploreContent = async () => {
     const publications = await getPublications();
     return ( 
-        <>
-            <Proposals/>
-            <ContentMap publications={publications}/>
-        </>
+        <div className="flex flex-col justify-center w-full">
+            
+        </div>
     );
 }
  

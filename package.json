@@ -1,7 +1,7 @@
 {
   "name": "outline",
   "description": "Create and read millions of books, papers, fiction, etc.",
-  "author": "Outline",  
+  "author": "Outline",
   "browser": {
     "fs": false,
     "child_process": false,
@@ -60,6 +60,7 @@
     "next": "14.0.1",
     "next-client-cookies": "^1.1.0",
     "next-themes": "^0.2.1",
+    "query-string": "^8.1.0",
     "react": "^18",
     "react-dom": "^18",
     "react-grid-layout": "^1.4.2",

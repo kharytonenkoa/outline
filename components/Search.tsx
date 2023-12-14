@@ -1,14 +1,42 @@
-import { AiOutlineSearch } from "react-icons/ai"
+"use client";
+
+import qs from "query-string";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
+import useDebounce from "@/hooks/useDebounce";
+
+import { SearchIcon } from "lucide-react";
+import { Input } from "./ui/input";
 
 const Search = () => {
-    return ( 
-    <div className="fixed left-[30%] w-[40%] hidden h-[35px] bg-black/10 border-[0.5px] border-white/20 backdrop-blur-2xl rounded-lg lg:flex md:flex sm:flex justify-between items-center pl-3 text-sm font-regular text-white/80">
-        <p>Search</p>
-        <div className="w-[50px] h-full flex justify-center items-center bg-neutral-800/50 rounded-r-lg cursor-pointer hover:bg-neutral-700">
-        <AiOutlineSearch className="w-[20px] h-[16px]"/>
-        </div>
-    </div> 
-    );
+  const router = useRouter();
+  const [value, setValue] = useState<string>('');
+  const debouncedValue = useDebounce<string>(value, 500);
+
+  useEffect(() => {
+    const query = {
+      title: debouncedValue,
+    };
+
+    const url = qs.stringifyUrl({
+      url: '/explore',
+      query
+    });
+
+    router.push(url);
+  }, [debouncedValue, router]);
+
+  return ( 
+    <div className="fixed left-[32%] w-[35%] hidden h-[35px] bg-neutral-400/20 backdrop-blur-2xl rounded-full lg:flex md:flex sm:flex justify-start items-center pl-3 text-sm font-regular">
+    <SearchIcon className="w-4 h-4"/>
+    <Input className="bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+      placeholder="Search"
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+    />
+    </div>
+  );
 }
  
 export default Search;

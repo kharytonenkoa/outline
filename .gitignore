@@ -6,8 +6,6 @@ application_default_credentials.json
 
 client_secret_133940048241-ae5l7dd25664smp2bu9jbsr5afbmu7fj.apps.googleusercontent.com.json
 
-authenticateImplicitWithAdc.js
-
 # dependencies
 /node_modules
 /.pnp

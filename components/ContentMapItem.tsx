@@ -18,36 +18,41 @@ const ContentMapItem: React.FC<ContentMapItemProps> = ({
   return ( 
     <div
       className="
-        relative 
-        group 
+        relative
         flex 
-        flex-col 
         items-center 
         justify-center
         overflow-hidden 
         cursor-pointer
-        rounded-2xl
         w-full
         h-full
         select-none
+        rounded-md
       "
     >
       <div 
         className="
           relative 
           overflow-hidden
-          w-[150px]
-          h-[100px]
-          hover:w-[250px] transition-all duration-200
+          aspect-[3/2]
+          w-[100%]
         "
       >
-        <div className="hover:backdrop-blur-2xl flex w-[150px] h-[100px] absolute hover:w-[250px] transition-all duration-200 z-10 text-white bottom-0">{data.title}</div>
+        <div className="flex w-full h-full absolute bottom-0 p-3 z-30 items-end">
+          <p className="truncate-all">
+            <span className="text-lg font-semibold">{data.title}</span> 
+            <span className="text-lg font-regural text-white/60">    {data.description}</span>
+            <br/>
+            <span className="text-sm">{data.user_id}</span>
+            </p>
+          </div>
         <Image
           className="object-cover z-0"
           src={imagePath || '/images/placeholder.png'}
           fill
           alt="Image"
         />
+        <div className="w-full h-full absolute z-20 bg-gradient-to-t from-neutral-900/70 via-neutral-900/20 to-transparent"></div>
       </div>
     </div>
    );

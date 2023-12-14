@@ -1,28 +1,20 @@
-import { BookPlus } from "lucide-react";
+import { ArrowUpCircle } from "lucide-react";
 import { Button } from "./ui/button";
-import { TooltipProvider, Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+import Image from "next/image";
 
 const Proposals = () => {
     return ( 
-        <div className="w-full h-[200px] flex items-center justify-center p-4 mt-4">
-            <div className="flex flex-row rounded-xl bg-gradient-to-b from-blue-400 to-blue-600 w-full h-[200px] select-none">
-                <div className="flex flex-col gap-y-4 h-full w-[40%] px-6 items-start justify-center">
-                <div>
-                <p className="text-white text-2xl font-semibold">As many as touched Him</p>
-                <p className="text-white/40 text-sm font-regular">Eglanton Thorne</p>
-                </div>
-                <div className="flex flex-row gap-x-2 items-center">
-                <Button>Open</Button>
-                <TooltipProvider>
-                <Tooltip>
-                    <TooltipTrigger>
-                    <BookPlus className="w-6 h-6 stroke-2 stroke-white/40 hover:stroke-white transition-all duration-200"/>
-                    </TooltipTrigger>
-                <TooltipContent><p>Add to readlist</p></TooltipContent>
-                </Tooltip>
-                </TooltipProvider>
-                </div>
-                </div>
+        <div className="w-full h-[300px] flex flex-row mt-16 mb-4">
+            <div className="w-[50%] flex flex-col justify-center">
+                <p className="text-3xl drop-shadow-lg font-semibold select-none">Get your next level adventure with <span className="font-bold">Outline<sup className="">2</sup></span></p>
+                <p className="text-white/80 drop-shadow-lg select-none">Improve the flexibility of your Workspace, access your publications anywhere and much more functions.</p>
+                <Button className="w-44 gap-x-2 mt-4">
+                    <ArrowUpCircle className="stroke-[1.5px] w-5 h-5"/>
+                    Upgrade Outline
+                </Button>
+            </div>
+            <div className="w-[50%] h-full flex justify-center overflow-visible select-none">
+                <Image src={"/images/proposals-image.png"} width={600} height={300} alt="img" className="overflow-auto"/>
             </div>
         </div>
      );
