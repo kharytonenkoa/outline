@@ -28,9 +28,9 @@ const Search = () => {
   }, [debouncedValue, router]);
 
   return ( 
-    <div className="fixed left-[32%] w-[35%] hidden h-[35px] bg-neutral-400/20 backdrop-blur-2xl rounded-full lg:flex md:flex sm:flex justify-start items-center pl-3 text-sm font-regular">
-    <SearchIcon className="w-4 h-4"/>
-    <Input className="bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+    <div className="fixed left-[33%] w-[35%] hidden h-[30px] bg-neutral-900 backdrop-blur-2xl rounded-full lg:flex md:flex sm:flex justify-start items-center pl-3 text-sm font-regular">
+    <SearchIcon className="w-4 h-4 stroke-white/60"/>
+    <Input className="bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-white/60"
       placeholder="Search"
       value={value}
       onChange={(e) => setValue(e.target.value)}

@@ -20,14 +20,15 @@ const ContentMap: React.FC<ContentMapPageProps> = ({
             className="
               flex
               w-full
+              h-screen
               items-center
               justify-center
-              mt-8
-              text-2xl
+              text-xl
               font-semibold
+              text-white
             "
           >
-            No publications found.
+            Nothing found.
           </div>
         )
       }
@@ -38,11 +39,12 @@ const ContentMap: React.FC<ContentMapPageProps> = ({
             grid 
             grid-cols-1 
             sm:grid-cols-1 
-            md:grid-cols-2 
-            lg:grid-cols-2 
-            xl:grid-cols-2 
-            2xl:grid-cols-2
-            gap-1
+            md:grid-cols-3
+            lg:grid-cols-4
+            xl:grid-cols-4
+            2xl:grid-cols-6
+            gap-x-4
+            gap-y-2
             py-4
         ">
             {publications.map((publication:Publication) => (

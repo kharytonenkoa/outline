@@ -18,6 +18,7 @@ const SignInButton = forwardRef<HTMLButtonElement, SignInButtonProps>(({
         ref={ref}
         {...props}
         size={"sm"}
+        className="rounded-full"
         >
         <KeyRound className="mr-2 h-4 w-4" /> Login
       </Button>

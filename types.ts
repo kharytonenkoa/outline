@@ -3,7 +3,6 @@ import Stripe from "stripe";
 export interface Publication {
     id: string;
     user_id: string;
-    username: string;
     title: string;
     description: string;
     publication_path: string;
@@ -21,6 +20,7 @@ export interface UserDetails {
     username: string;
     bio: string;
     avatar_url: string;
+    wallpaper_path: string;
     billing_adress?: Stripe.Address;
     payment_method?: Stripe.PaymentMethod[Stripe.PaymentMethod.Type];
 }

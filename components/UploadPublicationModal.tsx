@@ -20,6 +20,7 @@ import { Textarea } from "./ui/textarea"
 import { toast } from "./ui/use-toast";
 import { Checkbox } from "./ui/checkbox";
 import useUploadModal from "@/hooks/useUploadModal";
+import { Send } from "lucide-react";
   
   export function UploadPublicationModal() {
   const [isLoading, setIsLoading] = useState(false);
@@ -146,16 +147,16 @@ import useUploadModal from "@/hooks/useUploadModal";
     }
     return (
       <Dialog open={upload.isOpen} onOpenChange={upload.onClose}>
-        <DialogContent className="sm:max-w-[800px] h-[500px]">
+        <DialogContent className="sm:max-w-[800px] h-[500px] border-none rounded-xl bg-neutral-900">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 mt-8 ">
               <div className="flex flex-row gap-x-2">
               <aside className="w-[430px] flex flex-col gap-y-2 pr-2">
-                    <Input {...register('publication', { required: true })} type="file" placeholder="Publication title" accept=".pdf" className="bg-white text-black file:text-black mb-2" />
-                    <input {...register('title', { required: true })} placeholder="Publication title" className="bg-transparent w-full ring-transparent text-2xl font-semibold border-none rounded-none" />
+                    <Input {...register('publication', { required: true })} type="file" placeholder="Publication title" accept=".pdf" className="bg-white text-black file:text-black mb-2 rounded-xl" />
+                    <input {...register('title', { required: true })} placeholder="Publication title" className="bg-transparent w-full ring-transparent text-2xl font-semibold border-none rounded-none placeholder:text-neutral-300" />
                     <Textarea {...register('description', { required: false })} placeholder="Write a description" className="bg-transparent border-none p-0 resize-none max-h-[120px]"/>
               </aside>
               <div className="w-1/2 fixed left-[50%] pr-8 pl-2">
-                <div className="w-[300px] fixed right-8 aspect-[3/2] rounded-lg gap-x-1 text-sm select-none
+                <div className="w-[300px] fixed right-8 aspect-[3/2] rounded-xl gap-x-1 text-sm select-none
                         text-white bg-black/10 border border-white/40 flex cursor-pointer
                         justify-center items-center">
                   <input {...register('image', { required: true })} id="image" type="file" placeholder="Preview" accept="image/*" className="text-transparent file:hidden z-20 cursor-pointer" onChange={handleChange}/>
@@ -163,7 +164,7 @@ import useUploadModal from "@/hooks/useUploadModal";
                   <span id='val'></span>
                   <span id='image' className="absolute select-none text-center text-sm cursor-pointer">Upload the preview <br/> (.png or .jpg file)</span>
                 </div>
-              <div className="fixed right-[110px] top-[270px] flex p-2 items-center justify-center space-x-2 bg-black/10 rounded-lg w-[220px] h-[80px] border border-white/40">
+              <div className="fixed right-[110px] top-[270px] flex p-2 items-center justify-center space-x-2 bg-black/10 rounded-xl w-[220px] h-[80px] border border-white/40">
                 <Checkbox id="visibility" {...register('visibility', { value: true })} />
                 <div className="flex flex-col">
                 <label htmlFor="visibility" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
@@ -174,7 +175,10 @@ import useUploadModal from "@/hooks/useUploadModal";
                 </p>
                 </div>
               </div>
-              <Button type="submit" className="fixed bottom-8 right-8">Submit</Button>
+              <Button type="submit" className="fixed bottom-8 right-8 rounded-full w-[120px] gap-x-2">
+                <Send className="w-4 h-4"/>
+                <p>Submit</p>
+              </Button>
               </div>
               </div>
         </form>

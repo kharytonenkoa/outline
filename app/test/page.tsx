@@ -1,7 +1,7 @@
 "use client"
 import Header from "@/components/Header"
 import { Document, Page } from 'react-pdf';
-import Background from "@/components/Background"
+import Background from "@/components/Wallpaper"
 import { useState } from "react";
 
 

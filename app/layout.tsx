@@ -9,6 +9,7 @@ import ToasterProvider from '@/providers/ToasterProvider'
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from '@/components/ui/toaster'
 import { Navigation } from '@/components/Navigation'
+import Wallpaper from '@/components/Wallpaper'
 
 const font = Open_Sans({ subsets: ['latin'] })
 

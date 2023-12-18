@@ -34,22 +34,24 @@ import Link from "next/link";
 import Image from "next/image";
 import { useUser } from "@/hooks/useUser";
 import { useTheme } from "next-themes";
-import { Database } from "@/types_db";
-import { useEffect, useState } from "react";
-import supabase from "@/app/utils/supabase";
-type Profiles = Database['public']['Tables']['users']['Row']
+import { UserDetails } from "@/types";
+import useLoadAvatar from "@/hooks/useLoadAvatar";
   
-  export function DropdownMenuProfile({
-    url
-  }: {
-    url: Profiles['avatar_url']
-  }) {
-    const [avatarUrl, setAvatarUrl] = useState<Profiles['avatar_url']>(url)
+const DropdownMenuProfile = () => {
     const { isLoading, user, userDetails } = useUser();
     const settings = useSettings();
     const router = useRouter();
     const authModal = useAuthModal();
     const supabaseClient = useSupabaseClient();
+
+    if (!userDetails) {
+      return null;
+    }
+    const { data: imageData } = supabaseClient
+    .storage
+    .from('images')
+    .getPublicUrl(userDetails?.avatar_url);
+
     const handleLogout = async () => {
         const { error } = await supabaseClient.auth.signOut();
         router.refresh();
@@ -60,38 +62,21 @@ type Profiles = Database['public']['Tables']['users']['Row']
         }
 
         const { setTheme } = useTheme()
-
-        useEffect(() => {
-          async function downloadImage(path: string) {
-            try {
-              const { data, error } = await supabase.storage.from('images').download(path)
-              if (error) {
-                throw error
-              }
-      
-              const url = URL.createObjectURL(data)
-              setAvatarUrl(url)
-            } catch (error) {
-              console.log('Error downloading image: ', error)
-            }
-          }
-      
-          if (url) downloadImage(url)
-        }, [url, supabase])
+        
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          {avatarUrl ? (
+          {imageData ? (
           <Image
-            width={35}
-            height={35}
-            src={avatarUrl}
+            width={30}
+            height={30}
+            src={imageData.publicUrl}
             alt="Avatar"
             className="rounded-full"
-            style={{ height: 35, width: 35 }}
+            style={{ height: 30, width: 30 }}
           />
           ) : (
-            <div className="bg-white dark:bg-black rounded-full flex items-center justify-center" style={{ height: 35, width: 35 }}><User className='w-4 h-4'/></div>
+            <div className="bg-white dark:bg-black rounded-full flex items-center justify-center" style={{ height: 30, width: 30 }}><User className='w-4 h-4'/></div>
           )}
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-48">
@@ -140,4 +125,4 @@ type Profiles = Database['public']['Tables']['users']['Row']
       </DropdownMenu>
     )
   }
-  
+export default DropdownMenuProfile;

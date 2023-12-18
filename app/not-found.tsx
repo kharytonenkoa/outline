@@ -1,6 +1,6 @@
 import Header from "@/components/Header";
 import getPublications from "./actions/getPublications";
-import Background from "@/components/Background";
+import Background from "@/components/Wallpaper";
 import { Metadata } from "next";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";

@@ -18,22 +18,40 @@ import { useUser } from "@/hooks/useUser"
 import React from "react"
 import AccountForm from "./Settings/AccountForm"
 import { User } from "lucide-react"
+import { useSupabaseClient } from "@supabase/auth-helpers-react"
+import Image from "next/image"
 
 export function SettingsModal() {
 
   const { user, userDetails } = useUser();
 
+  const supabaseClient = useSupabaseClient();
+  if (!userDetails) {
+    return null;
+  }
+  const { data: imageData } = supabaseClient
+  .storage
+  .from('images')
+  .getPublicUrl(userDetails?.avatar_url);
+
   const settings = useSettings();
   return (
     <Dialog open={settings.isOpen} onOpenChange={settings.onClose}>
-      <DialogContent className="sm:max-w-[1000px] h-[500px]">
+      <DialogContent className="sm:max-w-[1000px] h-[500px] bg-neutral-900 border-none rounded-xl">
         <Tabs defaultValue="account" className="w-[1000px] flex flex-row gap-x-2">
         <aside>
           <div className="flex flex-row gap-x-2 h-[40px] w-full px-2 select-none">
-            {userDetails?.avatar_url ? (
-              <img src={userDetails?.avatar_url} alt="Avatar" className="w-[35px] h-[35px] flex rounded-full" />
+            {imageData ? (
+            <Image
+            width={35}
+            height={35}
+            src={imageData.publicUrl}
+            alt="Avatar"
+            className="rounded-full"
+            style={{ height: 35, width: 35 }}
+          />
             ) : (
-              <div className="bg-white dark:bg-black w-[35px] h-[35px] rounded-full flex items-center justify-center"><User className="w-4 h-4"/></div>
+              <div className="bg-white dark:bg-black rounded-full flex items-center justify-center" style={{ height: 35, width: 35 }}><User className='w-4 h-4'/></div>
             )}
             <div className="flex flex-col">
               <p className="font-medium text-sm text-white truncate">{userDetails?.full_name}</p>

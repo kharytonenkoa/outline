@@ -23,12 +23,19 @@ const PublicationItem: React.FC<PublicationItemProps> = ({
         <div key={data.id} data-grid={{ w: 1, h: 1, minW: 1, maxW: 1, minH: 1, maxH: 1 }}>
               <HomePageItemContextMenu />
               <div className="w-full aspect-square select-none bg-black/10 rounded-xl flex flex-col p-1 justify-center items-center backdrop-blur-2xl" onClick={() => onClick(data.id)}>
-              <Image
+              {imagePath? <Image
                 className="object-cover rounded-xl"
-                src={imagePath || '/images/placeholder.png'}
+                src={imagePath}
                 fill
                 alt="Image"
-              />
+              /> : 
+              <Image
+                className="object-cover rounded-xl"
+                src={'/images/homepageitemplaceholder.png'}
+                fill
+                alt="Image"
+              />}
+              
               </div>
               <div className="flex justify-center w-full">
               <TooltipProvider>
